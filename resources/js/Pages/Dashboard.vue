@@ -48,7 +48,7 @@ const historiesWithTotal = computed(() => {
     });
 });
 
-const fetchHistories = async (url = '/api/histories') => {
+const fetchHistories = async (url = '/admin/histories/filters') => {
     try {
         let params = { ...filters.value };
         if (url.includes('?')) {
@@ -57,7 +57,7 @@ const fetchHistories = async (url = '/api/histories') => {
             searchParams.forEach((v, k) => params[k] = v);
         }
 
-        const response = await axios.get('/api/histories', { params });
+        const response = await axios.get('/admin/histories/filters', { params });
         localHistories.value = response.data;
     } catch (e) {
         console.error('Ошибка при загрузке историй', e);

@@ -7,9 +7,12 @@ use App\Models\Category;
 
 class CategoryService
 {
-    public function paginate(int $page = 20)
+    public function paginate(int $userId, int $page = 20)
     {
-        return Category::paginate($page)->withQueryString();
+        return Category::where('user_id', $userId)
+            ->latest()
+            ->paginate($page)
+            ->withQueryString();
     }
 
     public function create(array $data): array

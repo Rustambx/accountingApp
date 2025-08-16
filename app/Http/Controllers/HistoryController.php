@@ -7,6 +7,7 @@ use App\Http\Requests\History\HistoryUpdateRequest;
 use App\Http\Resources\HistoryResource;
 use App\Models\History;
 use App\Services\HistoryService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class HistoryController extends Controller
@@ -46,6 +47,7 @@ class HistoryController extends Controller
     public function store(HistoryStoreRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = auth()->id();
 
         return $this->historyService->create($data);
     }
@@ -78,5 +80,12 @@ class HistoryController extends Controller
         return response()->json([
             'message' => 'История успешно удалена'
         ], Response::HTTP_OK);
+    }
+
+    public function getHistoriesFilters(Request $request)
+    {
+        return response()->json(
+            $this->historyService->getHistoriesFilters($request, 20)
+        );
     }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('comment')->nullable();
             $table->enum('type', ['expense', 'income']);
 
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->timestamps();
         });

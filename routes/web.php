@@ -17,6 +17,8 @@ Route::get('dashboard', [DashboardController::class, 'index'])
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::resource('histories', HistoryController::class)->except(['show']);
+
+    Route::get('/histories/filters', [HistoryController::class, 'getHistoriesFilters']);
 });
 
 require __DIR__.'/auth.php';

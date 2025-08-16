@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = $this->categoryService->paginate();
+        $categories = $this->categoryService->paginate(auth()->id());
 
         return inertia('Category/Index', [
             'categories' => CategoryResource::collection($categories)
@@ -50,6 +50,7 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = auth()->id();
 
         return $this->categoryService->create($data);
     }

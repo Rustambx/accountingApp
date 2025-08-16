@@ -9,17 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class History extends Model
 {
-    protected $fillable = ['amount', 'date', 'comment', 'type', 'category_id'];
+    protected $fillable = ['amount', 'date', 'comment', 'type', 'user_id', 'category_id'];
 
     protected $casts = [
         'date' => 'datetime',
         'type' => TransactionType::class,
     ];
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
-    }
 
     public function getTypeLabelAttribute(): string
     {
@@ -27,6 +22,16 @@ class History extends Model
             TransactionType::Expense => 'Расход',
             TransactionType::Income => 'Доход'
         };
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     protected static function booted()

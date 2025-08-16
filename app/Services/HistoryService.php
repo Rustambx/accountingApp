@@ -13,12 +13,16 @@ class HistoryService
 {
     public function paginate(int $page = 20)
     {
-        return History::paginate($page)->withQueryString();
+        return History::where('user_id', auth()->id())
+            ->paginate($page)
+            ->withQueryString();
     }
 
     public function getCreateData(): array
     {
-        $categories = CategoryResource::collection(Category::all())->resolve();
+        $categories = CategoryResource::collection(
+            Category::where('user_id', auth()->id())->get()
+        )->resolve();
         $types = TransactionType::options();
 
         return compact('categories', 'types');
@@ -34,7 +38,9 @@ class HistoryService
     public function getEditData(History $history): array
     {
         $history = HistoryResource::make($history)->resolve();
-        $categories = CategoryResource::collection(Category::all())->resolve();
+        $categories = CategoryResource::collection(
+            Category::where('user_id', auth()->id())->get()
+        )->resolve();
         $types = TransactionType::options();
 
         return compact('history', 'categories', 'types');
@@ -54,7 +60,9 @@ class HistoryService
 
     public function getHistoriesFilters(Request $request, int $page = 20): array
     {
-        $query = History::with('category')->orderBy('date');
+        $query = History::where('user_id', auth()->id())
+            ->with('category')
+            ->orderBy('date');
 
         if ($request->filled('type')) {
             $query->where('type', $request->type);
@@ -88,7 +96,7 @@ class HistoryService
                         'active' => $link['active'] ?? false,
                     ];
                 }),
-                'categories' => Category::all(),
+                'categories' => Category::where('user_id', auth()->id())->get(),
             ],
         ];
     }
