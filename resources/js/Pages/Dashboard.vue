@@ -120,7 +120,7 @@ const fetchHistories = async (url = '/admin/histories/filters') => {
                 </tbody>
             </table>
 
-            <Pagination :links="localHistories.meta?.links" mode="async" @navigate="fetchHistories" />
+            <Pagination :links="localHistories.meta?.links" mode="inertia"/>
         </div>
     </div>
 </template>
